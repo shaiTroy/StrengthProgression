@@ -2,6 +2,8 @@ import csv
 from datetime import datetime
 import os
 import matplotlib.pyplot as plt
+import json
+
 
 
 os.system('clear')
@@ -133,13 +135,14 @@ def transform_and_save_arrays(filtered):
     map = {}
     for i in range(len(comps)):
         key = int(comps[i][2])
+        gl_change = comps[i][3] 
         if key in map:
-            map[key] += 1
+            map[key].append(gl_change)
         else:
-            map[key] = 1 
+            map[key] = [gl_change]
             
     keys = sorted(map.keys())
-    values = [map[k] for k in keys]
+    values = [sum(map[k]) / len(map[k]) for k in keys if map[k]]
 
     # Plotting
     plt.figure(figsize=(12, 6))
@@ -150,6 +153,9 @@ def transform_and_save_arrays(filtered):
     plt.xticks(rotation=90)  # Rotate x-labels if they overlap
     plt.tight_layout()
     plt.show()
+    
+    with open("gl_map.json", "w") as f:
+        json.dump(map, f)
     
     
 if __name__ == '__main__':
