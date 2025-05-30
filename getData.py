@@ -1,6 +1,8 @@
 import csv
 from datetime import datetime
 import os
+import matplotlib.pyplot as plt
+
 
 os.system('clear')
 
@@ -136,8 +138,18 @@ def transform_and_save_arrays(filtered):
         else:
             map[key] = 1 
             
-    for key in sorted(map):
-        print(f"{key}: {map[key]}")
+    keys = sorted(map.keys())
+    values = [map[k] for k in keys]
+
+    # Plotting
+    plt.figure(figsize=(12, 6))
+    plt.bar(keys, values, color='skyblue')
+    plt.xlabel('Key')
+    plt.ylabel('Count')
+    plt.title('Map Key Frequencies')
+    plt.xticks(rotation=90)  # Rotate x-labels if they overlap
+    plt.tight_layout()
+    plt.show()
     
     
 if __name__ == '__main__':
